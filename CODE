@@ -1,0 +1,397 @@
+#CODE
+
+include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+#include<string.h>
+  //insert  and update functions
+void insertend(int data, char foodname[25], int quantity, float price);
+void updatefood(int udata, int uquantity);
+  // Display Function	
+void foodlist();	
+void order_view(int order, int quantity, int or_no);
+void main_menu();#
+   //Delete & Count Function
+void deletefood(int serial);
+int countitem();
+void br(int line);
+  //START Structure Here
+struct Node{
+char foodname[50];
+int quantity;
+float price;
+int data;
+struct Node *next;
+};
+typedef struct Node node ;
+node *head, *list;
+int main(){
+int c=0; int any;
+int cardno[100];
+float cardmoney[100];
+float totalmoney = 0;
+int total_order[100];
+int order_quantity[100];
+int order=0;
+int uquantity;
+int citem;
+head = NULL;
+insertend(1,"Burger   ",23,120.23);
+insertend(2,"Pizza    ",13,100.67);
+insertend(3,"Hot Cake ",8,720.83);
+insertend(4,"Coffee   ",46,70.23);
+insertend(5,"Ice-Cream",46,70.23);
+insertend(6,"Sandwich ",34,60.23);
+insertend(7,"Grill    ",7,520.29);
+insertend(8,"Naan-Bread",121,35.13);
+insertend(9,"Cold Drinks",73,20.13);
+mainmenu:
+br(1);
+main_menu();
+int main_menu_choice;
+int admin_panel_choice;int wlc;
+ char ffoodname[25];
+int fquantity;
+int fdata;
+float fprice;
+int fposi;
+ int z;
+int fdelete;
+int confirm;
+int payment;
+int ps_menu;
+int ps_menu2;
+br(1);
+printf("\t\t\t\tenter your choise\n\n\n");
+scanf("%d",&main_menu_choice);
+ if((main_menu_choice >=1 && main_menu_choice <=3)){
+ if(main_menu_choice == 1){
+ foodlist:
+ printf("\t\t\t=>Main Menu\n\n ");
+foodlist();
+}
+else if( main_menu_choice == 2){
+adminpanelchoice:
+		                                                          printf("\t\t Main Menu\n\t\t");	
+printf("Please Enter Password or ( 1 to Back in Main Menu ) : ");
+scanf("%d",&admin_panel_choice);
+ if(admin_panel_choice==123321){
+ node *temp;
+ temp = list;
+ adminchoise:
+ br(3); 
+ printf("\t\t\tYou are on Admin Pannel:-\n");
+printf("\t\t\t 1. Total Cash Today \n\n");
+printf("\t\t\t 2. View Card Pay list \n\n");
+printf("\t\t\t 3. Add Food \n\n");
+printf("\t\t\t 4. Delete Food \n\n");
+printf("\t\t\t 5. Display Food List \n\n");
+ printf(" \t\t\t6. Instant Ordered Preview\n\n");
+printf(" \t\t\t0. Main Menu ");
+ int adminchoise;
+scanf("%d",&adminchoise);
+if(adminchoise==1){
+printf("\n\n\n\t\t\tTodays Total Cash : %0.2f  \n",totalmoney);
+goto adminchoise;
+else if(adminchoise==2){
+ if(c!=0){
+ br(3);
+ printf(" _____________________________\n");
+printf("|   Card NO.   |   Money $   |\n");
+printf("------------------------------\n");
+int z;
+for( z=1; z<=c;z++){
+printf("\t\t\t|  %d  | %0.2f |\n",cardno[z],cardmoney[z]);
+printf("\t\t\t------------------------------\n");
+ }
+}
+if(c==0){
+printf("\n\nNo Card History\n\n\n");
+}
+goto adminchoise;
+}
+else if(adminchoise==3){
+ foodadd:
+ br(3);    
+printf("\t\t\t Enter Food Name :  ");
+scanf("%s",ffoodname);
+fquantity:
+br(1);
+ printf("\t\t\tEnter Food Quantity :  ");
+ scanf("%d",&fquantity); 
+ foodserial:
+br(1); 
+printf("\t\t\t Enter Food No :  ");
+scanf("%d",&fdata);
+node *exist;
+exist = list;
+ while(exist->data!=fdata){
+ if(exist->next==NULL){
+ break;
+exist=exist->next;
+ }
+if(exist->data==fdata){
+br(3);
+printf(" \t\tFood No Already Exist, Please Re-Enter the Food No "); 
+goto foodserial;
+}
+fprice:
+br(2); 
+printf("\t\t\tEnter Food Price :  ");
+scanf("%f",&fprice);
+int cs;
+br(2);
+printf("\t\t\tSubmiting your data........");
+for( cs=0;cs<4;cs++)
+{
+printf(" .");
+}
+insertend(fdata,ffoodname,fquantity,fprice);
+br(2);      
+printf("\t\t\tAdded Food  Successfully\n");
+ goto adminchoise;
+else if(adminchoise==4){
+printf("\t\tEnter the Food No to be deleted from the menu : ");
+fdelete:
+scanf("%d",&fdelete);
+node *temp;
+temp=list;
+while(temp->data != fdelete){
+temp = temp->next;}
+if(temp->data==fdelete){
+deletefood(fdelete);}
+else{
+br(2);
+printf("Please Enter Correct Food Number :  "); 
+goto fdelete;}
+goto adminchoise;
+else if(adminchoise==5){
+foodlist(); 
+printf("\t\t1. <-- back  \n\n");
+scanf("%d",&any);
+goto adminchoise;}
+else if(adminchoise==6){
+br(2);
+printf("\n\t\t");
+printf("______________________________________________________ "); 
+printf("\n\t\t");  
+printf("|  Order No.  |   FooD Name   |  Quantity |  In Stock |"); 
+printf("\n\t\t");  
+printf("------------------------------------------------------"); 
+int o;
+for( o=1;o<=order;o++){
+order_view(total_order[o],order_quantity[o],o);
+br(2);
+ printf("\t\t\t\t1. <-- back  \n\n");
+ scanf("%d",&any);
+goto adminchoise;}
+else if(adminchoise==0){
+goto mainmenu;
+}
+ else{
+br(2); 
+printf("\t\t\tPlease Select From List :  "); 
+goto adminchoise;}}
+else if(admin_panel_choice==1){
+goto mainmenu;}
+else{
+br(2); 
+printf("\t\t\tPlease Enter Correct Choice");
+goto adminpanelchoice;}}
+else if(main_menu_choice==3){
+printf("\t\t\tThank You For Using Our System \n\n\n\n\n\n\n");
+exit(1);}}
+else{
+br(2);  
+printf("\t\t\tPlease Enter Correct Choice"); 
+goto mainmenu;
+}
+int get_food_choice;
+br(2);
+printf("\t\t\tPlace Your Order by entering the food No: ") ; 
+scanf("%d",&get_food_choice);
+if(get_food_choice==0){
+goto mainmenu;
+}
+node *temp;
+temp = list ;
+while(temp->data != get_food_choice){
+temp = temp->next;
+if(temp==NULL){
+br(2);   
+printf("\t\t\t\tPlace Choice From List "); br(2); 
+goto foodlist;}}
+if(get_food_choice == temp->data){
+fcquantity:
+br(2);  
+printf("\t\t\t\tEnter Food Quantity : ");
+int fcquantity;
+scanf("%d",&fcquantity); 
+ if(fcquantity==0){
+printf("\t\t\tQuantity Can't be Zero "); 
+goto foodlist;
+}else if(fcquantity>temp->quantity){
+printf("\t\t\tOut of Stock !"); 
+goto foodlist;
+}printf("\t\t\tYour ordered food is  %s  its total price is %0.2f \n\n",temp->foodname,temp->price*fcquantity);
+printf("\t\t\t\t1. Confirm to buy this \n\n");
+printf("\t\t\t\t2. Food List  ");
+confirm:
+scanf("%d",&confirm);
+ if(confirm == 1 ){
+ br(2);   
+printf("\t\t\t\t 1. Cash ");
+br(2);   printf("\t\t\t\t 2. Credit ");
+payment:
+scanf("%d",&payment);
+if(payment==1){
+totalmoney += temp->price*fcquantity;
+order++;
+total_order[order]=get_food_choice;
+order_quantity[order]=fcquantity;
+uquantity = temp->quantity - fcquantity;
+updatefood(get_food_choice,uquantity);
+printf("\t\t\t\t\t===>THANK YOU<===");
+br(2); printf("\t\t\t\t\tFood Ordered Successfully ...");
+br(2);  printf("\t\t\t\t\t1. Do you want to Buy Another Delicious food? ");
+br(2);  printf("\t\t\t\t2. Main Menu ");
+psmenu:
+scanf("%d",&ps_menu);
+if(ps_menu==1){
+goto foodlist;}
+else if(ps_menu==2){
+goto mainmenu;}
+else{
+br(2);printf("\t\t\t\tPlease Choose from list : "); 
+goto psmenu;}
+}
+else if(payment==2){
+int card_number[20];
+c++;
+printf("\t\t\t\tEnter Your Card No : ");
+scanf("%d",&card_number[c]);
+if(card_number!=16){
+printf("enter correct card number");
+scanf("%d",&card_number[c]);
+cardno[c] = card_number[c];
+int pin;
+br(2);printf("\t\t\tEnter Your Card Pin [we never save your pin]  : ");
+scanf("%d",&pin);
+cardmoney[c] = temp->price*fcquantity;
+totalmoney += temp->price*fcquantity;
+order++;
+total_order[order]=get_food_choice;
+order_quantity[order]=fcquantity;
+uquantity = temp->quantity - fcquantity;
+updatefood(get_food_choice,uquantity);
+br(2); printf("\t\t\t\tPayment Success...");
+br(2); printf("\t\t\t\t1. Do You Want To Buy Another Delicious food ? ");
+br(2);   printf("\t\t\t\t2. Main Menu ");
+psmenu2:
+scanf("%d",&ps_menu2);
+if(ps_menu2==1){
+goto foodlist;}
+else if(ps_menu2==2){
+goto mainmenu;}
+else{
+br(2);printf("\t\t\t\tPlease choose from list : "); goto psmenu2;}}
+else{
+br(2);printf("\t\t\t\tEnter Choice from List : ");
+goto payment;
+//end payment
+}}   
+else if(confirm == 2){
+goto foodlist;}
+else{
+br(2);   printf("\t\t\t\tEnter Choise from List : ");
+goto confirm;
+//End confirm
+ } } 	
+else{
+br(2); printf("\t\t\t\tPlease Choice From List "); 
+br(2);
+goto foodlist;} 
+ ///end get food choice
+}
+void br(int line){
+int i;
+for( i=0; i<line;i++){
+printf("\n");}}
+void main_menu(){
+br(5); printf("\t\t\t===> 1. Food List"); 
+br(2);  printf("\t\t\t===> 2. Admin Panel"); 
+br(2);  printf("\t\t\t===> 3. Exit\n\n\n"); 
+br(1);}
+void insertend(int data, char foodname[25], int quantity, float price){
+node *temp;
+temp=(node *)malloc(sizeof(node));
+temp->data = data;
+temp->price = price;
+temp-> quantity = quantity;
+strcpy(temp->foodname,foodname);
+temp->next = NULL;
+if(head==NULL){
+head = temp;
+list = head;
+}
+else{
+while(head->next != NULL){
+head = head->next;
+}
+head->next = temp;}}
+void deletefood(int serial){
+ node *temp;
+temp=(node *)malloc(sizeof(node));
+temp = list;
+if(temp->data != serial){
+while(temp->next->data != serial){
+temp = temp->next;}
+if(temp->next->data == serial){
+temp->next = temp->next->next;
+printf("\n\n\n\n\t\t\tDeleting Item..... %d ",serial);
+printf("\n\n\n\n\t\t\tDeleted Successfylly \n"); }
+else{
+printf("\n\n\n\n\t\t\tFood Item Not Found\n"); }
+head = temp ;}
+else{
+temp = temp->next;
+printf("\n\n\n\n\t\t\tDeleting Item...... %d ",serial);
+printf("\n\n\n\n\t\t\tDeleted Successfylly \n"); 
+head = temp ;
+list=head;
+}}
+void updatefood(int udata, int uquantity){
+node *temp;
+temp = list;
+while(temp->data!=udata){
+temp = temp->next;}
+if(temp->data == udata){
+temp->quantity = uquantity;}}
+void foodlist(){
+printf("\n\t\t"); 
+printf("______________________________________________________ ");
+printf("\n\t\t"); 
+printf("|  Food No.  |   FooD Name   |  Price  |   In Stock   |");
+printf("\n\t\t"); 
+printf("-------------------------------------------------------");
+node *temp;
+temp = list;
+while(temp != NULL){
+printf("\n\t\t"); 
+printf("|     %d      |    %s  |    %0.2f   |    %d    |",temp->data,temp->foodname, temp->price, temp->quantity);
+printf("\n\t\t");
+printf("-------------------------------------------------------");
+temp = temp->next ;}}
+void order_view(int order, int quantity, int or_no){
+node *temp;
+temp = list;
+while(temp->data != order){
+temp = temp->next;}
+if(temp->data == order){
+printf("\n\t\t"); 
+printf("|     %d      |    %s  |     %d     |     %d     |",or_no,temp->foodname,quantity,temp->quantity);
+printf("\n\t\t");
+printf("-------------------------------------------------------");
+           
+ 
+
